@@ -1,10 +1,11 @@
-import { app, shell, BrowserWindow, screen } from 'electron'
+import { app, shell, BrowserWindow, screen, ipcMain, protocol } from 'electron'
 import { join, resolve, relative } from 'node:path'
 import { readFile, readdir, stat } from 'node:fs/promises'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import commander from 'commander'
 import { chromium } from 'playwright'
+import doAuth from './oauth'
 
 const { program } = commander
 let mainWindow: BrowserWindow
@@ -61,11 +62,33 @@ function createWindow(): void {
   }
 }
 
+const handleCommands = async (event: any, command: any): Promise<void> => {
+  // const webContents = event.sender
+  // const win = BrowserWindow.fromWebContents(webContents)
+  try {
+    switch (command) {
+      case 'login':
+        // eslint-disable-next-line no-case-declarations
+        const { token } = await doAuth() // , win
+        console.log('token-----', token)
+        // win.close()
+        break
+
+      default:
+        break
+    }
+  } catch (error) {
+    // handle error here
+    console.error(error)
+  }
+}
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 const launcher = async (): Promise<void> => {
   app.whenReady().then(() => {
+    ipcMain.on('commands', handleCommands)
     // Set app user model id for windows
     electronApp.setAppUserModelId('com.electron')
 
@@ -116,7 +139,7 @@ const getFilesRecursively = async (directory: string): Promise<string[]> => {
   return results.filter((file) => file.endsWith('.md'))
 }
 
-function sleep(ms): Promise<void> {
+function sleep(ms: number | undefined): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
@@ -208,7 +231,7 @@ const main = async (): Promise<void> => {
 ;(async (): Promise<void> => {
   try {
     await launcher()
-    await main()
+    // await main()
   } catch (error) {
     console.error(error)
   }

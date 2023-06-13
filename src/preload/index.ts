@@ -5,6 +5,9 @@ import { electronAPI } from '@electron-toolkit/preload'
 const api = {
   handleUpdates: (callback: (event: IpcRendererEvent, ...args: unknown[]) => void): void => {
     ipcRenderer.on('translation', callback)
+  },
+  publishCommands: (command: string): void => {
+    ipcRenderer.send('commands', command)
   }
 }
 
