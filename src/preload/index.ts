@@ -6,6 +6,9 @@ const api = {
   handleUpdates: (callback: (event: IpcRendererEvent, ...args: unknown[]) => void): void => {
     ipcRenderer.on('translation', callback)
   },
+  handleAuth: (callback: (event: IpcRendererEvent, ...args: unknown[]) => void): void => {
+    ipcRenderer.on('token', callback)
+  },
   publishCommands: (command: string): void => {
     ipcRenderer.send('commands', command)
   }
