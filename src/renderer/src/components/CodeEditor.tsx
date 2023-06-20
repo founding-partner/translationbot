@@ -2,9 +2,10 @@ import { useEffect, useRef, useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'
 import 'monaco-editor/esm/vs/basic-languages/javascript/javascript.contribution'
 import type * as monacoEditor from 'monaco-editor'
+import PropTypes from 'prop-types'
 
-const CodeEditor = (): JSX.Element => {
-  const [code, setCode] = useState('')
+const CodeEditor = ({ defaultCode }: { defaultCode: string }): JSX.Element => {
+  const [code, setCode] = useState(defaultCode || '')
   const editorRef = useRef(null)
 
   useEffect(() => {
@@ -43,6 +44,10 @@ const CodeEditor = (): JSX.Element => {
       editorDidMount={(editor) => (editorRef.current = editor)}
     />
   )
+}
+
+CodeEditor.propTypes = {
+  defaultCode: PropTypes.string
 }
 
 export default CodeEditor
