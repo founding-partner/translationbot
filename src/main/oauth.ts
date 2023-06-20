@@ -26,7 +26,7 @@ let authWindow: BrowserWindow
 
 type AuthenticateOptions = {
   scope: string
-  accessType: string
+  accessType?: string
   additionalTokenRequestData?: string
 }
 
@@ -110,7 +110,9 @@ const authenticate = (
     })
   }
 
-  function tokenRequest(data): Promise<unknown> {
+  function tokenRequest(
+    data
+  ): Promise<{ access_token: string; token_type: string; scope: string }> {
     const header = {
       Accept: 'application/json',
       'Content-Type': 'application/x-www-form-urlencoded'
@@ -131,7 +133,7 @@ const authenticate = (
       headers: header,
       body: queryString.stringify(data)
     }).then((res) => {
-      return res.json()
+      return res.json() as unknown as { access_token: string; token_type: string; scope: string }
     })
   }
 
@@ -172,8 +174,8 @@ const config = {
 }
 
 const options = {
-  scope: 'SCOPE',
-  accessType: 'ACCESS_TYPE'
+  scope: 'repo read:org'
+  // accessType: 'ACCESS_TYPE'
 }
 
 const windowParams = {
@@ -196,17 +198,16 @@ const doAuth = async (): Promise<{ token: string | null }> => // ; win: BrowserW
     app.whenReady().then(() => {
       protocol.handle('my-app', (request: Request) => {
         console.log(`OAuth callback URL: ${request.url}`)
-        const uri = new URL(request.url)
-
-        // Handle the callback here. For example:
-        resolve({ token: uri?.searchParams?.get('code') }) // , win: authWindow
         return new Response('received code....')
       })
 
       // use your token here
       githubOAuth
         .getAccessToken(options)
-        .then(() => {})
+        .then((value) => {
+          console.log('json value', value)
+          resolve({ token: value.access_token })
+        })
         .catch((error) => reject(error))
     })
   })

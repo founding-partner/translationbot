@@ -62,7 +62,7 @@ function createWindow(): void {
   }
 }
 
-const handleCommands = async (event: any, command: any): Promise<void> => {
+const handleCommands = async (_event: any, command: any): Promise<void> => {
   // const webContents = event.sender
   // const win = BrowserWindow.fromWebContents(webContents)
   try {
@@ -71,7 +71,12 @@ const handleCommands = async (event: any, command: any): Promise<void> => {
         // eslint-disable-next-line no-case-declarations
         const { token } = await doAuth() // , win
         console.log('token-----', token)
-        // win.close()
+
+        console.log('sending token')
+        // window will be closed, at this moment.
+        // so webContent will not be available, so use
+        // main window webcontent
+        sendToUI('token', token)
         break
 
       default:
