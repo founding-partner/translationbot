@@ -7,6 +7,9 @@ dependencies:
   '@electron-toolkit/utils':
     specifier: ^1.0.2
     version: 1.0.2(electron@25.1.0)
+  '@heroicons/react':
+    specifier: ^2.0.18
+    version: 2.0.18(react@18.2.0)
   '@octokit/plugin-rest-endpoint-methods':
     specifier: ^7.2.3
     version: 7.2.3
@@ -747,6 +750,14 @@ packages:
       tailwindcss: ^3.0
     dependencies:
       tailwindcss: 3.3.2
+    dev: false
+
+  /@heroicons/react@2.0.18(react@18.2.0):
+    resolution: {integrity: sha512-7TyMjRrZZMBPa+/5Y8lN0iyvUU/01PeMGX2+RE7cQWpEUIcb4QotzUObFkJDejj/HUH4qjP/eQ0gzzKs2f+6Yw==}
+    peerDependencies:
+      react: '>= 16'
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /@humanwhocodes/config-array@0.11.8:
