@@ -4,9 +4,12 @@
     "src/renderer/src/env.d.ts",
     "src/renderer/src/**/*",
     "src/renderer/src/**/*.tsx",
+    "src/renderer/src/**/*.json",
     "src/preload/*.d.ts"
   ],
   "compilerOptions": {
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
     "composite": true,
     "jsx": "react-jsx",
     "baseUrl": ".",
