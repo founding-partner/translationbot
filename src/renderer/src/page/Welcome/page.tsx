@@ -11,18 +11,17 @@ import {
 } from '@renderer/components/ui/select'
 import { langKeyValuePair } from '@renderer/lib/contexts/IntlContext'
 import LogoImage from '@renderer/components/LogoImage'
-import { Button } from '@renderer/components/ui/button'
+import Link from '@renderer/route/Link'
 
 export const WelcomeHeader = (): JSX.Element => {
   const langList = useLanguageList()
   const [language, changeLanguage] = useChangeLanguage()
-  const [content, loadcontent] = usePageIntlContent('welcome')
 
   useEffect(() => {
     console.log(`selected language: ${language}`)
   }, [language])
 
-  const handleLanguageChange = (value: unknown) => {
+  const handleLanguageChange = (value: unknown): void => {
     console.log(`language to change to: ${value}`)
     changeLanguage(value)
   }
@@ -60,8 +59,14 @@ const highLightRCMTitle = (title = '', rcmLabel = ''): JSX.Element[] => {
   return title
     .replace(rcmLabel, `${spliter}${rcmLabel}${spliter}`)
     .split(spliter)
-    .map((v) => {
-      return v === rcmLabel ? <span className="text-white shadow-md">{v}</span> : <span>{v}</span>
+    .map((v, i) => {
+      return v === rcmLabel ? (
+        <span key={`v-${v}-${i}`} className="text-white shadow-md">
+          {v}
+        </span>
+      ) : (
+        <span key={`v-${v}-${i}`}>{v}</span>
+      )
     })
 }
 
@@ -82,7 +87,7 @@ const WelcomePage = (): JSX.Element => {
         {highLightRCMTitle(content?.welcomeToTranslationTeam, content?.rcm)}
       </div>
       <div className="text-center mt-8">
-        <Button>continue</Button>
+        <Link to="/choose/framework">continue</Link>
       </div>
     </>
   )
